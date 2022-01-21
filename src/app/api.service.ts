@@ -5,7 +5,6 @@ import { catchError } from 'rxjs/operators';
 import { Gallery } from './models/gallery';
 
 const apiUrl = 'http://localhost:3000/gallery';
-// https://www.djamware.com/post/5f0533338ce55338fd15aca3/mean-stack-angular-10-tutorial-upload-image-file
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +14,12 @@ export class ApiService {
   constructor(
     private http: HttpClient
   ) { }
+
+  getGallery() {
+    return this.http.get(apiUrl).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   getGalleryById(id: string): Observable<any> {
     const url = `${apiUrl}/${id}`;

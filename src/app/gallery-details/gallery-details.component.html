@@ -1,12 +1,11 @@
 <a [routerLink]="['/gallery']">
   <h3>Upload again!</h3>
 </a>
-<mat-card class="example-card">
-  <mat-card-header>
-    <mat-card-title>{{gallery.imageTitle}}</mat-card-title>
-  </mat-card-header>
-  <img mat-card-image src="{{gallery.imageUrl}}" alt="Uploaded successfully">
-  <mat-card-content>
+
+<div class="card">
+  <div class="card-body">
     <p>{{gallery.imageDesc}}</p>
-  </mat-card-content>
-</mat-card>
+  </div>
+  <h5 class="card-title mt-3">{{gallery.imageTitle}}</h5>
+  <img src="{{gallery.imageUrl}}" alt="Uploaded successfully">
+</div>

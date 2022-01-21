@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MyErrorStateMatcher } from './myErrorStateMatcher';
+import { Gallery } from '../models/gallery';
 
 @Component({
   selector: 'app-gallery',
@@ -11,6 +12,7 @@ import { MyErrorStateMatcher } from './myErrorStateMatcher';
   styleUrls: ['./gallery.component.scss']
 })
 export class GalleryComponent implements OnInit {
+  files: Gallery[] = [];
   galleryForm: FormGroup;
   imageFile: File = null;
   imageTitle = '';
@@ -25,6 +27,7 @@ export class GalleryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getAllFiles();
     this.galleryForm = this.formBuilder.group({
       imageFile : [null, Validators.required],
       imageTitle : [null, Validators.required],
@@ -32,17 +35,21 @@ export class GalleryComponent implements OnInit {
     });
   }
 
+  getAllFiles() {
+    this.api.getGallery().subscribe((data: any) => {
+      this.files = data;
+      console.log('fokol images',data);
+    });
+  }
+
   onFormSubmit(): void {
-    this.isLoadingResults = true;
-    this.api.addGallery(this.galleryForm.value, this.galleryForm.get('imageFile').value._files[0])
+    this.api.addGallery(this.galleryForm.value, this.galleryForm.get('imageFile').value)
       .subscribe((res: any) => {
-        this.isLoadingResults = false;
         if (res.body) {
           this.router.navigate(['/gallery-details', res.body._id]);
         }
       }, (err: any) => {
         console.log(err);
-        this.isLoadingResults = false;
       });
   }
 
